@@ -32,9 +32,8 @@ class Snort(BaseNormalizer):
         session = {
             'timestamp': submission_timestamp,
             'source_ip': o_data['source_ip'],
-            'source_port': o_data['source_port'],
             'destination_ip': o_data['destination_ip'],
-            'destination_port': o_data['destination_port'],
+            
             'honeypot': 'snort',
             'protocol': o_data['proto'],
             
@@ -46,5 +45,11 @@ class Snort(BaseNormalizer):
             },
             'sensor': o_data['sensor'] # UUID
         }
+
+        # ICMP will have no ports
+        if 'destination_port' in o_data:
+            session['destination_port'] = o_data['destination_port']
+        if 'source_port' in o_data:
+            session['source_port'] = o_data['source_port']
 
         return [{'session': session},]
