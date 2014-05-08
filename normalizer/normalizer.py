@@ -27,6 +27,7 @@ from modules import dionaea_capture
 from modules import dionaea_binary
 from modules import beeswarm_hive
 from modules import conpot_events
+from modules import snort_alerts
 from bson import ObjectId
 
 import gevent
