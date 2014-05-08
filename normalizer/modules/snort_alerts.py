@@ -21,7 +21,7 @@ from normalizer.modules.basenormalizer import BaseNormalizer
 
 
 class Snort(BaseNormalizer):
-    channels = ('snort.events',)
+    channels = ('snort.alerts',)
 
     def normalize(self, data, channel, submission_timestamp):
         o_data = json.loads(data)
