@@ -81,7 +81,7 @@ class Normalizer(object):
                                                                    channel, hpfeed_item['timestamp'])
 
                         #batch up normalized items
-                        to_be_inserted.append((norm, hpfeed_item['_id']))
+                        to_be_inserted.append((norm, hpfeed_item['_id'], hpfeed_item['ident']))
                         normalizations += 1
                     elif channel not in no_normalizers_warnings:
                         error_list.append({'_id': hpfeed_item['_id'],
@@ -111,8 +111,8 @@ class Normalizer(object):
         logger.info("Normalizer stopped.")
 
     def inserter(self, to_be_inserted):
-        for norm, id in to_be_inserted:
-            self.database.insert_normalized(norm, id)
+        for norm, id, identifier in to_be_inserted:
+            self.database.insert_normalized(norm, id, identifier)
 
     def stop(self):
         self.enabled = False
