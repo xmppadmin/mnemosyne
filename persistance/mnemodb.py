@@ -56,7 +56,7 @@ class MnemoDB(object):
         self.db.session.ensure_index('timestamp', unique=False, background=True)
         self.db.daily_stats.ensure_index([('channel', 1), ('date', 1)])
 
-    def insert_normalized(self, ndata, hpfeed_id):
+    def insert_normalized(self, ndata, hpfeed_id, identifier=None):
         assert isinstance(hpfeed_id, ObjectId)
         #ndata is a collection of dictionaries
         for item in ndata:
@@ -77,6 +77,8 @@ class MnemoDB(object):
                                                upsert=True)
                 elif collection is 'session':
                     document['hpfeed_id'] = hpfeed_id
+                    if identifier:
+                        document['identifier'] = identifier
                     self.db[collection].insert(document)
                 elif collection is 'dork':
                     self.db[collection].update({'content': document['content'], 'type': document['type']},
