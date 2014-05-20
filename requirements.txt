@@ -9,6 +9,6 @@ pycrypto
 python-magic
 nose
 kumo
-git+https://github.com/threatstream/hpfeeds/
+-e git+https://github.com/threatstream/hpfeeds/#egg=hpfeeds-dev
 sphinx
 sphinxcontrib-httpdomain
