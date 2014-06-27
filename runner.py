@@ -146,7 +146,7 @@ if __name__ == '__main__':
 
     if not args.no_normalizer:
         #start menmo and inject persistence module
-        normalizer = Normalizer(db, ignore_rfc1918=config['normalizer_ignore_rfc1918'])
+        normalizer = Normalizer(db, ignore_rfc1918=c['normalizer_ignore_rfc1918'])
         logger.info("Spawning normalizer")
         greenlets['normalizer'] = gevent.spawn(normalizer.start_processing)
 
