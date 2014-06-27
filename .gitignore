@@ -47,3 +47,5 @@ data/cork/*.json
 server.key
 
 server.crt
+
+/env

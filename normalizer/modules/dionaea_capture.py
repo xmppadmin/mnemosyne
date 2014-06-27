@@ -22,10 +22,10 @@ from normalizer.modules.basenormalizer import BaseNormalizer
 class DionaeaCaptures(BaseNormalizer):
     channels = ('dionaea.capture', 'dionaea.capture.anon', 'dionaea.captures')
 
-    def normalize(self, data, channel, submission_timestamp):
+    def normalize(self, data, channel, submission_timestamp, ignore_rfc1918=True):
         o_data = json.loads(data)
 
-        if self.is_RFC1918_addr(o_data['saddr']):
+        if ignore_rfc1918 and self.is_RFC1918_addr(o_data['saddr']):
             return []
 
         session = {

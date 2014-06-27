@@ -43,11 +43,12 @@ logger = logging.getLogger(__name__)
 
 
 class Normalizer(object):
-    def __init__(self, database):
+    def __init__(self, database, ignore_rfc1918=True):
         self.normalizers = {}
         #injected instance of database.Database
         self.database = database
         self.enabled = True
+        self.ignore_rfc1918 = ignore_rfc1918
 
         #max number of concurrent mongodb inserters
         self.worker_pool = Pool(5)
@@ -79,7 +80,8 @@ class Normalizer(object):
                         oldest_id = hpfeed_item['_id']
                     if channel in self.normalizers:
                         norm = self.normalizers[channel].normalize(hpfeed_item['payload'],
-                                                                   channel, hpfeed_item['timestamp'])
+                                                                   channel, hpfeed_item['timestamp'],
+                                                                   ignore_rfc1918=self.ignore_rfc1918)
 
                         #batch up normalized items
                         to_be_inserted.append((norm, hpfeed_item['_id'], hpfeed_item['ident']))

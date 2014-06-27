@@ -30,11 +30,11 @@ class DionaeaConnections(BaseNormalizer):
         else:
             return ip
 
-    def normalize(self, data, channel, submission_timestamp):
+    def normalize(self, data, channel, submission_timestamp, ignore_rfc1918=True):
         o_data = json.loads(data)
 
         o_data['remote_host'] = self.normalize_ip(o_data['remote_host'])
-        if self.is_RFC1918_addr(o_data['remote_host']):
+        if ignore_rfc1918 and self.is_RFC1918_addr(o_data['remote_host']):
             return []
 
         # {

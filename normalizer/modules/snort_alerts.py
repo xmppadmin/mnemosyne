@@ -23,10 +23,10 @@ from normalizer.modules.basenormalizer import BaseNormalizer
 class Snort(BaseNormalizer):
     channels = ('snort.alerts',)
 
-    def normalize(self, data, channel, submission_timestamp):
+    def normalize(self, data, channel, submission_timestamp, ignore_rfc1918=True):
         o_data = json.loads(data)
 
-        if self.is_RFC1918_addr(o_data['source_ip']):
+        if ignore_rfc1918 and self.is_RFC1918_addr(o_data['source_ip']):
             return []
 
         session = {
