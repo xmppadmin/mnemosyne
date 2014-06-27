@@ -22,7 +22,7 @@ from normalizer.modules.basenormalizer import BaseNormalizer
 class DionaeaBinary(BaseNormalizer):
     channels = ('mwbinary.dionaea.sensorunique',)
 
-    def normalize(self, data, channel, submission_timestamp):
+    def normalize(self, data, channel, submission_timestamp, ignore_rfc1918=True):
         decoded = data.decode('hex')
         hashes = super(DionaeaBinary, self).generate_checksum_list(decoded)
         file_ = {

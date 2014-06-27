@@ -24,7 +24,7 @@ from urlparse import urlparse
 class BaseNormalizer(object):
     ports_map = {22: 'ssh', 80: 'http', 135: 'dcom-scm', 445: 'microsoft-ds', 443: 'https"'}
 
-    def normalize(self, data, channel_name, submission_timestamp):
+    def normalize(self, data, channel_name, submission_timestamp, ignore_rfc1918=True):
         pass
 
     def make_url(self, url):

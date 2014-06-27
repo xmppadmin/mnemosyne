@@ -25,7 +25,7 @@ from normalizer.modules.basenormalizer import BaseNormalizer
 class GlastopfFiles(BaseNormalizer):
     channels = ('glastopf.files',)
 
-    def normalize(self, data, channel, submission_timestamp):
+    def normalize(self, data, channel, submission_timestamp, ignore_rfc1918=True):
         md5, data = data.split(' ', 1)
         decoded = base64.b64decode(data)
         hashes = super(GlastopfFiles, self).generate_checksum_list(decoded)

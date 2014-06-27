@@ -66,6 +66,8 @@ def parse_config(config_file):
     config['webapi_port'] = parser.getint('webapi', 'port')
     config['webapi_host'] = parser.get('webapi', 'host')
 
+    config['normalizer_ignore_rfc1918'] = parser.getboolean('normalizer', 'ignore_rfc1918')
+
     return config
 
 
@@ -144,7 +146,7 @@ if __name__ == '__main__':
 
     if not args.no_normalizer:
         #start menmo and inject persistence module
-        normalizer = Normalizer(db)
+        normalizer = Normalizer(db, ignore_rfc1918=c['normalizer_ignore_rfc1918'])
         logger.info("Spawning normalizer")
         greenlets['normalizer'] = gevent.spawn(normalizer.start_processing)
 

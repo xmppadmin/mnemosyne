@@ -32,10 +32,10 @@ class GlastopfEvents(BaseNormalizer):
         #dorks to be filtered out
         self.dork_filter = '/headers|favicon.ico|w00tw00t|/robots.txt'
 
-    def normalize(self, data, channel, submission_timestamp):
+    def normalize(self, data, channel, submission_timestamp, ignore_rfc1918=True):
         o_data = json.loads(data)
 
-        if self.is_RFC1918_addr(o_data['source'][0]):
+        if ignore_rfc1918 and self.is_RFC1918_addr(o_data['source'][0]):
             return []
 
         relations = {}

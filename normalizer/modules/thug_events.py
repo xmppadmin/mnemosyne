@@ -25,7 +25,7 @@ from normalizer.modules.basenormalizer import BaseNormalizer
 class ThugEvents(BaseNormalizer):
     channels = ('thug.events',)
 
-    def normalize(self, data, channel, submission_timestamp):
+    def normalize(self, data, channel, submission_timestamp, ignore_rfc1918=True):
         #split up original payload, so that there are only one root element
         data = '<THUG_DATA>' + data + '</THUG_DATA>'
 
