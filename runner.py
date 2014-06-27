@@ -66,7 +66,7 @@ def parse_config(config_file):
     config['webapi_port'] = parser.getint('webapi', 'port')
     config['webapi_host'] = parser.get('webapi', 'host')
 
-    config['normalizer_ignore_rfc1918'] = parser.get('normalizer', 'ignore_rfc1918')
+    config['normalizer_ignore_rfc1918'] = parser.getboolean('normalizer', 'ignore_rfc1918')
 
     return config
 
