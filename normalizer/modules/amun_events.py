@@ -34,9 +34,9 @@ class AmunEvents(BaseNormalizer):
                 'session': {
                     'timestamp': submission_timestamp,
                     'source_ip': o_data['attackerIP'],
-		            'source_port': o_data['attackerPort'],
-		            'destination_port': o_data['victimPort'],
-		            'honeypot': 'amun'
-            	}
+                    'source_port': o_data['attackerPort'],
+                    'destination_port': o_data['victimPort'],
+                    'honeypot': 'amun'
+                }
             },
-		]
+        ]
