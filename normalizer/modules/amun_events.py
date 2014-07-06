@@ -30,10 +30,10 @@ class AmunEvents(BaseNormalizer):
             return []
 
         return [
-        	{
-        		'session': {
-		            'timestamp': submission_timestamp,
-		            'source_ip': o_data['attackerIP'],
+            {
+                'session': {
+                    'timestamp': submission_timestamp,
+                    'source_ip': o_data['attackerIP'],
 		            'source_port': o_data['attackerPort'],
 		            'destination_port': o_data['victimPort'],
 		            'honeypot': 'amun'
