@@ -43,7 +43,11 @@ class BaseNormalizer(object):
         if port_number in BaseNormalizer.ports_map:
             return BaseNormalizer.ports_map[port_number]
         else:
-            return None
+            try:
+                return socket.getservbyport(int(port_number))
+            except:
+                return None
+        return None
 
     def generate_checksum_list(self, data):
         result = {}
