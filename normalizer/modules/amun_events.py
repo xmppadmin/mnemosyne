@@ -29,14 +29,18 @@ class AmunEvents(BaseNormalizer):
         if ignore_rfc1918 and self.is_RFC1918_addr(o_data['attackerIP']):
             return []
 
-        return [
-            {
-                'session': {
-                    'timestamp': submission_timestamp,
-                    'source_ip': o_data['attackerIP'],
-                    'source_port': o_data['attackerPort'],
-                    'destination_port': o_data['victimPort'],
-                    'honeypot': 'amun'
-                }
-            },
-        ]
+        session = {
+            'timestamp': submission_timestamp,
+            'source_ip': o_data['attackerIP'],
+            'source_port': int(o_data['attackerPort']),
+            'destination_ip': o_data['victimIP'],
+            'destination_port': int(o_data['victimPort']),
+            'honeypot': 'amun'
+        }
+
+        protocol = super(AmunEvents, self).port_to_service(int(o_data['victimPort']))
+        if protocol is not None:
+            session['protocol'] = protocol
+
+        relations = {'session': session}
+        return [relations]
