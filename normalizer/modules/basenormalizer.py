@@ -62,8 +62,11 @@ class BaseNormalizer(object):
         #192.168.0.0 = 3232235520
         RFC1918_net_bits = ((167772160, 8), (2886729728, 12), (3232235520, 16))
 
-        #ip to decimal
-        ip = struct.unpack("!L", socket.inet_aton(ip))[0]
+        try:
+            #ip to decimal
+            ip = struct.unpack("!L", socket.inet_aton(ip))[0]
+        except:
+            return False
 
         for net, mask_bits in RFC1918_net_bits:
             ip_masked = ip & (2 ** 32 - 1 << (32 - mask_bits))
