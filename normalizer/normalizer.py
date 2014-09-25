@@ -30,6 +30,7 @@ from modules import beeswarm_hive
 from modules import conpot_events
 from modules import snort_alerts
 from modules import amun_events
+from modules import wordpot_events
 from bson import ObjectId
 
 import gevent
