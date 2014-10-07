@@ -32,6 +32,7 @@ from modules import snort_alerts
 from modules import amun_events
 from modules import wordpot_events
 from modules import shockpot_events
+from modules import p0f_events
 from bson import ObjectId
 
 import gevent
