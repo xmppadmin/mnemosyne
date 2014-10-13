@@ -18,10 +18,23 @@
 import json
 
 from normalizer.modules.basenormalizer import BaseNormalizer
-
+from datetime import datetime
 
 class P0fEvents(BaseNormalizer):
     channels = ('p0f.events',)
+
+    def get_metadata(self, o_data, submission_timestamp):
+        metadata = {}
+        for name in ['app', 'link', 'os', 'uptime', ]:
+            if name in o_data and o_data[name] != '???':
+                metadata[name] = o_data[name]
+        
+        if metadata:
+            metadata['ip'] = o_data['client_ip']
+            metadata['honeypot'] = 'p0f'
+            metadata['timestamp'] = submission_timestamp
+
+        return metadata
 
     def normalize(self, data, channel, submission_timestamp, ignore_rfc1918=True):
         o_data = json.loads(data)
@@ -38,5 +51,11 @@ class P0fEvents(BaseNormalizer):
             'honeypot': 'p0f',
             'protocol': 'pcap'
         }
+
         relations = {'session': session}
+        
+        metadata = self.get_metadata(o_data, submission_timestamp)
+        if metadata:
+            relations['metadata'] = metadata
+
         return [relations]

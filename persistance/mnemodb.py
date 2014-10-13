@@ -58,6 +58,8 @@ class MnemoDB(object):
         self.db.daily_stats.ensure_index([('channel', 1), ('date', 1)])
         self.db.counts.ensure_index([('identifier', 1), ('date', 1)])
         self.db.counts.ensure_index('identifier', unique=False, background=True)
+        self.db.metadata.ensure_index([('ip', 1), ('honeypot', 1)])
+        self.db.metadata.ensure_index('ip', unique=False, background=True)
 
     def insert_normalized(self, ndata, hpfeed_id, identifier=None):
         assert isinstance(hpfeed_id, ObjectId)
@@ -88,6 +90,14 @@ class MnemoDB(object):
                                                {'$set': {'lasttime': document['timestamp']},
                                                 '$inc': {'count': document['count']}},
                                                upsert=True)
+                elif collection is 'metadata':
+                    if 'ip' in document and 'honeypot' in document:
+                        query = {
+                            'ip': document['ip'], 
+                            'honeypot': document['honeypot']
+                        }
+                        values = dict((k,v) for k,v in document.items() if k not in ['ip', 'honeypot'])
+                        self.db[collection].update(query, {'$set':values}, upsert=True)
                 else:
                     raise Warning('{0} is not a know collection type.'.format(collection))
                     #if we end up here everything if ok - setting hpfeed entry to normalized
