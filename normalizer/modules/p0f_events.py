@@ -26,11 +26,12 @@ class P0fEvents(BaseNormalizer):
     def get_metadata(self, o_data, submission_timestamp):
         metadata = {}
         for name in ['app', 'link', 'os', 'uptime', ]:
-            if name in o_data:
+            if name in o_data and o_data[name] != '???':
                 metadata[name] = o_data[name]
         
         if metadata:
             metadata['ip'] = o_data['client_ip']
+            metadata['honeypot'] = 'p0f'
             metadata['date'] = datetime.combine(submission_timestamp.date(), datetime.min.time())
 
         return metadata
