@@ -32,7 +32,7 @@ class P0fEvents(BaseNormalizer):
         if metadata:
             metadata['ip'] = o_data['client_ip']
             metadata['honeypot'] = 'p0f'
-            metadata['date'] = datetime.combine(submission_timestamp.date(), datetime.min.time())
+            metadata['timestamp'] = submission_timestamp
 
         return metadata
 

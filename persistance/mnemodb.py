@@ -58,7 +58,7 @@ class MnemoDB(object):
         self.db.daily_stats.ensure_index([('channel', 1), ('date', 1)])
         self.db.counts.ensure_index([('identifier', 1), ('date', 1)])
         self.db.counts.ensure_index('identifier', unique=False, background=True)
-        self.db.metadata.ensure_index([('ip', 1), ('honeypot', 1), ('date', 1)])
+        self.db.metadata.ensure_index([('ip', 1), ('honeypot', 1)])
         self.db.metadata.ensure_index('ip', unique=False, background=True)
 
     def insert_normalized(self, ndata, hpfeed_id, identifier=None):
@@ -91,13 +91,12 @@ class MnemoDB(object):
                                                 '$inc': {'count': document['count']}},
                                                upsert=True)
                 elif collection is 'metadata':
-                    if 'ip' in document and 'date' in document and 'honeypot' in document:
+                    if 'ip' in document and 'honeypot' in document:
                         query = {
                             'ip': document['ip'], 
-                            'date': document['date'],
                             'honeypot': document['honeypot']
                         }
-                        values = dict((k,v) for k,v in document.items() if k not in ['ip', 'date', 'honeypot'])
+                        values = dict((k,v) for k,v in document.items() if k not in ['ip', 'honeypot'])
                         self.db[collection].update(query, {'$set':values}, upsert=True)
                 else:
                     raise Warning('{0} is not a know collection type.'.format(collection))
