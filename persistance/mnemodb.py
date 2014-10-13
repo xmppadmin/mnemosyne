@@ -56,6 +56,8 @@ class MnemoDB(object):
         self.db.session.ensure_index('timestamp', unique=False, background=True)
         self.db.session.ensure_index('identifier', unique=False, background=True)
         self.db.daily_stats.ensure_index([('channel', 1), ('date', 1)])
+        self.db.counts.ensure_index([('identifier', 1), ('date', 1)])
+        self.db.counts.ensure_index('identifier', unique=False, background=True)
 
     def insert_normalized(self, ndata, hpfeed_id, identifier=None):
         assert isinstance(hpfeed_id, ObjectId)
@@ -101,17 +103,28 @@ class MnemoDB(object):
         else:
             payload = str(payload)
 
+        timestamp = datetime.utcnow()
         entry = {'channel': channel,
                  'ident': ident,
                  'payload': payload,
-                 'timestamp': datetime.utcnow(),
+                 'timestamp': timestamp,
                  'normalized': False}
         try:
             self.db.hpfeed.insert(entry)
         except InvalidStringData as err:
             logger.error(
-                'Failed to insert hpfeed data on {0} channel due to invalid string data. ({1})'.format(entry['channel'],
-                                                                                                       err))
+                'Failed to insert hpfeed data on {0} channel due to invalid string data. ({1})'.format(entry['channel'], err))
+
+        self.db.counts.update(
+            { 'identifier': ident, 'date': timestamp.strftime('%Y%m%d') },
+            { "$inc": {"event_count": 1} },
+            upsert=True
+        )
+        self.db.counts.update(
+            { 'identifier': channel, 'date': timestamp.strftime('%Y%m%d') },
+            { "$inc": {"event_count": 1} },
+            upsert=True
+        )
         self.rg.hpfeeds(entry)
 
     def hpfeed_set_errors(self, items):
