@@ -18,7 +18,7 @@
 import json
 
 from normalizer.modules.basenormalizer import BaseNormalizer
-
+from datetime import datetime
 
 class P0fEvents(BaseNormalizer):
     channels = ('p0f.events',)
@@ -31,7 +31,8 @@ class P0fEvents(BaseNormalizer):
         
         if metadata:
             metadata['ip'] = o_data['client_ip']
-            metadata['date'] = submission_timestamp.date()
+            metadata['date'] = datetime.combine(submission_timestamp.date(), datetime.min.time())
+
         return metadata
 
     def normalize(self, data, channel, submission_timestamp, ignore_rfc1918=True):
