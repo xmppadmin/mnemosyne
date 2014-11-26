@@ -29,18 +29,16 @@ class Suricata(BaseNormalizer):
             return []
 
         session = {
+            'honeypot': 'suricata',
             'timestamp': submission_timestamp,
             'source_ip': o_data['source_ip'],
             'destination_ip': o_data['destination_ip'],
-            
-            'honeypot': 'suricata',
             'protocol': o_data['proto'],
-            
             'suricata': {
-                'header':         o_data['header'],
+                'action':         o_data['action'],
                 'signature':      o_data['signature'],
-                'classification': o_data['classification'],
-                'priority':       o_data['priority'],
+                'signature_id':   o_data['signature_id'],
+                'signature_rev':  o_data['signature_rev'],
             },
             'sensor': o_data['sensor'] # UUID
         }
