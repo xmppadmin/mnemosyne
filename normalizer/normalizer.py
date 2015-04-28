@@ -34,6 +34,7 @@ from modules import wordpot_events
 from modules import shockpot_events
 from modules import p0f_events
 from modules import suricata_events
+from modules import elastichoney_events
 from bson import ObjectId
 
 import gevent
