@@ -33,10 +33,7 @@ class GlastopfEvents(BaseNormalizer):
         self.dork_filter = '/headers|favicon.ico|w00tw00t|/robots.txt'
 
     def normalize(self, data, channel, submission_timestamp, ignore_rfc1918=True):
-        if type(data) is dict:
-            o_data = data
-        else:
-            o_data = json.loads(data)
+        o_data = self.parse_record_data(data)
 
         if ignore_rfc1918 and self.is_RFC1918_addr(o_data['source'][0]):
             return []

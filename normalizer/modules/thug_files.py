@@ -24,7 +24,7 @@ class ThugFiles(BaseNormalizer):
     channels = ('thug.files',)
 
     def normalize(self, data, channel, submission_timestamp, ignore_rfc1918=True):
-        data = json.loads(data)
+        data = self.parse_record_data(data)
         decoded = base64.b64decode(data['data'])
         hashes = super(ThugFiles, self).generate_checksum_list(decoded)
 

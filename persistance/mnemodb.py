@@ -116,9 +116,7 @@ class MnemoDB(object):
             try:
                 payload = json.loads(payload)
             except ValueError, e:
-                logger.info('insert_hpfeed:payload: could not convert string')
-                pass
-
+                logger.warning('insert_hpfeed: payload was not JSON, storing as a string (ident=%s, channel=%s)', ident, channel)
 
         timestamp = datetime.utcnow()
         entry = {'channel': channel,
