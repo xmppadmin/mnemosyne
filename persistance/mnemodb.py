@@ -18,6 +18,7 @@
 import logging
 import string
 import time
+import json
 from datetime import datetime
 
 from pymongo import MongoClient
@@ -112,6 +113,10 @@ class MnemoDB(object):
             payload = str(payload).encode('hex')
         else:
             payload = str(payload)
+            try:
+                payload = json.loads(payload)
+            except ValueError, e:
+                logger.warning('insert_hpfeed: payload was not JSON, storing as a string (ident=%s, channel=%s)', ident, channel)
 
         timestamp = datetime.utcnow()
         entry = {'channel': channel,

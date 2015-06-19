@@ -19,6 +19,7 @@ import hashlib
 import socket
 import struct
 from urlparse import urlparse
+import json
 
 
 class BaseNormalizer(object):
@@ -75,3 +76,10 @@ class BaseNormalizer(object):
 
         return False
 
+    def parse_record_data(self, data):
+        if type(data) is dict:
+            return data
+        elif type(data) is list:
+            return data
+        else:
+            return json.loads(data)
