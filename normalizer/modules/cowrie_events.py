@@ -47,12 +47,16 @@ class CowrieEvents(BaseNormalizer):
 
             session['attachments'] = attachments
 
-        if len(o_data['credentials']) > 0:
-            auth_attempts = []
-            for cred in o_data['credentials']:
-                auth_attempts.append({'login': cred[0],
-                                      'password': cred[1]})
-            session['auth_attempts'] = auth_attempts
+        credentials = []
+        if o_data.get('credentials') and len(o_data['credentials']) > 0:
+            credentials.extend(o_data['credentials'])
+        if o_data.get('loggedin') and len(o_data['loggedin']) == 2:
+            credentials.append(o_data['loggedin'])
+
+        if len(credentials) > 0:
+            session['auth_attempts'] = [
+                {'login': user, 'password': password} for user, password in credentials
+            ]
 
         relations = [{'session': session}, ]
 
